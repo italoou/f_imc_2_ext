@@ -9,6 +9,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   TextEditingController pesoController = TextEditingController();
   TextEditingController alturaController = TextEditingController();
+  TextEditingController sexoController = TextEditingController();
+  String? selectedSexo;
 
   GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
@@ -20,6 +22,18 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+
+    final List<DropdownMenuEntry<String>> sexoEntries =  <DropdownMenuEntry<String>>[];
+
+    sexoEntries.add(DropdownMenuEntry<String>(
+          value: "Masculino", label: "Masculino", enabled: true));
+    sexoEntries.add(DropdownMenuEntry<String>(
+          value: "Feminino", label: "Feminino", enabled: true));
+    sexoEntries.add(DropdownMenuEntry<String>(
+          value: "Não Binario", label: "Não Binario", enabled: true));
+    sexoEntries.add(DropdownMenuEntry<String>(
+          value: "N/A", label: "N/A", enabled: false));
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Calculadora de IMC"),
@@ -71,6 +85,19 @@ class _HomeState extends State<Home> {
                     return null;
                 },
               ),
+              const SizedBox(height: 20),
+              DropdownMenu<String>(
+                    initialSelection: "",
+                    controller: sexoController,
+                    label: const Text('Sexo'),
+                    dropdownMenuEntries: sexoEntries,
+                    width: 370.0,
+                    onSelected: (String? sexo) {
+                      setState(() {
+                        selectedSexo = sexo;
+                      });
+                    },
+                  ), 
               Padding(
                   padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
                   child: Container(
@@ -108,22 +135,22 @@ class _HomeState extends State<Home> {
     //debugPrint("Peso ${peso} e altura ${altura}");
     //debugPrint("$imc");
     if (imc < 18.6) {
-      _texto = "Abaixo do peso (${imc.toStringAsPrecision(4)})";
+      _texto = "Sexo ${selectedSexo}, Abaixo do peso (${imc.toStringAsPrecision(4)})";
       _imagem = "imagens/thin.png";
     } else if (imc >= 18.6 && imc < 24.9) {
-      _texto = "Peso ideal (${imc.toStringAsPrecision(4)})";
+      _texto = "Sexo ${selectedSexo}, Peso ideal (${imc.toStringAsPrecision(4)})";
       _imagem = "imagens/shape.png";
     } else if (imc >= 24.9 && imc < 29.9) {
-      _texto = "Levemente acima do peso (${imc.toStringAsPrecision(4)})";
+      _texto = "Sexo ${selectedSexo}, Levemente acima do peso (${imc.toStringAsPrecision(4)})";
       _imagem = "imagens/fat.png";
     } else if (imc >= 29.9 && imc < 34.9) {
-      _texto = "Obesidade Grau I (${imc.toStringAsPrecision(4)})";
+      _texto = "Sexo ${selectedSexo}, Obesidade Grau I (${imc.toStringAsPrecision(4)})";
       _imagem = "imagens/fat.png";
     } else if (imc >= 34.9 && imc < 39.9) {
-      _texto = "Obesidade Grau II (${imc.toStringAsPrecision(4)})";
+      _texto = "Sexo ${selectedSexo}, Obesidade Grau II (${imc.toStringAsPrecision(4)})";
       _imagem = "imagens/fat.png";
     } else if (imc >= 40) {
-      _texto = "Obesidade Grau III (${imc.toStringAsPrecision(4)})";
+      _texto = "Sexo ${selectedSexo}, Obesidade Grau III (${imc.toStringAsPrecision(4)})";
       _imagem = "imagens/fat.png";
     }
 
